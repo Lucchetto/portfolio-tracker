@@ -6,7 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { Web3ReactProvider } from '@web3-react/core';
 import { ethers } from 'ethers';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react';
+import { appTheme } from './theme/Theme';
 
 function getLibrary(provider?: any, connector?: AbstractConnector): any {
   return new ethers.providers.Web3Provider(provider);
@@ -17,8 +18,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={appTheme}>
       <Web3ReactProvider getLibrary={getLibrary}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <App />
       </Web3ReactProvider>
     </ChakraProvider>
