@@ -1,12 +1,19 @@
+import { Button } from "@chakra-ui/react";
 import { Web3Provider } from "@ethersproject/providers";
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import { WalletConnector } from "../../connectors/WalletConnector";
 
 export const ConnectWallet = (): JSX.Element => {
   const provider = useWeb3React<Web3Provider>()
-  const onClick = () => {
+
+  const connect = () => {
     provider.activate(WalletConnector.injected)
   }
+
+  const disconnect = () => {
+    provider.deactivate()
+  }
+
   const getErrorMessage = (): string | undefined => {
     const providerError = provider.error
     if (providerError instanceof UnsupportedChainIdError) {
@@ -20,14 +27,18 @@ export const ConnectWallet = (): JSX.Element => {
   return (
     <div>
       { errorMessage && <div>{ errorMessage }</div> }
-      <div>ChainId: {provider.chainId}</div>
-      <div>Account: {provider.account}</div>
       {provider.active ? (
-        <div>✅ </div>
+        <>
+          <div>ChainId: {provider.chainId}</div>
+          <div>Account: {provider.account}</div>
+          <Button onClick={disconnect}>
+          Disconnect
+          </Button>
+        </>
       ) : (
-        <button type="button" onClick={onClick}>
+        <Button colorScheme='blue' onClick={connect}>
           Connect Wallet
-        </button>
+        </Button>
       )}
     </div>
   )
